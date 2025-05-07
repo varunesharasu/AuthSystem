@@ -58,33 +58,42 @@ const Login = () => {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-50">
-      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
-        <div className="text-center">
-          <h1 className="text-3xl font-extrabold text-sky-600">Welcome Back</h1>
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-sky-50 to-white">
+      <div className="relative w-full max-w-md p-8 space-y-8 bg-white rounded-2xl shadow-lg overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute -top-10 -right-10 w-40 h-40 bg-sky-100 rounded-full opacity-70"></div>
+        <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-sky-200 rounded-full opacity-70"></div>
+
+        <div className="relative text-center">
+          <h1 className="text-3xl font-extrabold bg-gradient-to-r from-sky-600 to-sky-400 bg-clip-text text-transparent">
+            Welcome Back
+          </h1>
           <p className="mt-2 text-gray-600">Log in to your account</p>
         </div>
 
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+          <div className="relative bg-red-50 border-l-4 border-red-400 text-red-700 p-4 rounded-md" role="alert">
             <span className="block sm:inline">{error}</span>
           </div>
         )}
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="space-y-4">
+        <form className="relative mt-8 space-y-6" onSubmit={handleSubmit}>
+          <div className="space-y-5">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 Email Address
               </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500"
-              />
+              <div className="mt-1 relative rounded-md shadow-sm">
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-sky-500 transition-all duration-200"
+                  placeholder="you@example.com"
+                />
+              </div>
               {formErrors.email && <p className="mt-1 text-sm text-red-600">{formErrors.email}</p>}
             </div>
 
@@ -92,14 +101,17 @@ const Login = () => {
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                 Password
               </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500"
-              />
+              <div className="mt-1 relative rounded-md shadow-sm">
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-sky-500 transition-all duration-200"
+                  placeholder="••••••••"
+                />
+              </div>
               {formErrors.password && <p className="mt-1 text-sm text-red-600">{formErrors.password}</p>}
             </div>
           </div>
@@ -118,8 +130,8 @@ const Login = () => {
             </div>
 
             <div className="text-sm">
-              <a href="#" className="font-medium text-sky-600 hover:text-sky-500">
-                Forgot your password?
+              <a href="#" className="font-medium text-sky-600 hover:text-sky-500 transition-colors">
+                Forgot password?
               </a>
             </div>
           </div>
@@ -128,17 +140,18 @@ const Login = () => {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 disabled:opacity-50"
+              className="relative w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-gradient-to-r from-sky-500 to-sky-600 hover:from-sky-600 hover:to-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 disabled:opacity-50 transition-all duration-200 overflow-hidden group"
             >
+              <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
               {submitting ? "Logging in..." : "Log in"}
             </button>
           </div>
         </form>
 
-        <div className="text-center mt-4">
-          <p className="text-sm text-gray-600">
+        <div className="relative text-center mt-4">
+          <p className="inline-flex text-sm text-gray-600">
             Don't have an account?{" "}
-            <Link to="/register" className="font-medium text-sky-600 hover:text-sky-500">
+            <Link to="/register" className="ml-1 font-medium text-sky-600 hover:text-sky-500 transition-colors">
               Sign up
             </Link>
           </p>
