@@ -3,6 +3,7 @@
 import { useContext } from "react"
 import { AuthContext } from "../context/AuthContext"
 import { useNavigate } from "react-router-dom"
+import ParticleBackground from "./ParticleBackground"
 
 const Dashboard = () => {
   const { user, logout } = useContext(AuthContext)
@@ -14,8 +15,12 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-sky-50 to-white">
-      <header className="bg-white shadow-md">
+    <div className="min-h-screen bg-gradient-to-br from-sky-50 to-white relative">
+      <div className="absolute inset-0 z-0">
+        <ParticleBackground variant="dashboard" />
+      </div>
+
+      <header className="bg-white bg-opacity-90 backdrop-blur-sm shadow-md relative z-10">
         <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
           <h1 className="text-2xl font-bold bg-gradient-to-r from-sky-600 to-sky-400 bg-clip-text text-transparent">
             Dashboard
@@ -29,9 +34,9 @@ const Dashboard = () => {
         </div>
       </header>
       <main>
-        <div className="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8 relative z-10">
           <div className="px-4 py-6 sm:px-0">
-            <div className="relative overflow-hidden bg-white shadow-lg rounded-2xl p-8">
+            <div className="relative overflow-hidden bg-white bg-opacity-90 backdrop-blur-sm shadow-lg rounded-2xl p-8">
               {/* Decorative elements */}
               <div className="absolute -top-10 -right-10 w-40 h-40 bg-sky-100 rounded-full opacity-50"></div>
               <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-sky-200 rounded-full opacity-50"></div>

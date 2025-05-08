@@ -3,6 +3,7 @@
 import { useState, useContext } from "react"
 import { useNavigate, Link } from "react-router-dom"
 import { AuthContext } from "../context/AuthContext"
+import ParticleBackground from "./ParticleBackground"
 
 const Register = () => {
   const navigate = useNavigate()
@@ -99,8 +100,12 @@ const Register = () => {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-sky-50 to-white py-10">
-      <div className="relative w-full max-w-md p-8 space-y-6 bg-white rounded-2xl shadow-lg overflow-hidden">
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-sky-50 to-white py-10 relative">
+      <div className="absolute inset-0 z-0">
+        <ParticleBackground variant="register" />
+      </div>
+
+      <div className="relative w-full max-w-md p-8 space-y-6 bg-white bg-opacity-90 backdrop-blur-sm rounded-2xl shadow-lg overflow-hidden z-10">
         {/* Decorative elements */}
         <div className="absolute -top-10 -right-10 w-40 h-40 bg-sky-100 rounded-full opacity-70"></div>
         <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-sky-200 rounded-full opacity-70"></div>
