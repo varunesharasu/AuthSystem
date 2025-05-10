@@ -15,15 +15,17 @@ pipeline {
                 cleanWs()
             }
         }
+
         stage('Clone Repo') {
             steps {
-                git 'https://github.com/varunesharasu/AuthSystem.git'
-            }
+                git branch: 'main',
+                    url: 'https://github.com/varunesharasu/AuthSystem.git'
+                    }
         }
 
         stage('Build Backend Image') {
             steps {
-                dir('backend') {
+                dir('server') {
                     script {
                         docker.build(env.BACKEND_IMAGE)
                     }
@@ -33,7 +35,7 @@ pipeline {
 
         stage('Build Frontend Image') {
             steps {
-                dir('frontend') {
+                dir('client') {
                     script {
                         docker.build(env.FRONTEND_IMAGE)
                     }
@@ -56,14 +58,14 @@ pipeline {
             steps {
                 script {
                     sh """
-                        sed 's/\\\${BUILD_NUMBER}/${env.BUILD_NUMBER}/g' Deployment/backend-deployment.yaml > backend-deployment-tagged.yaml
-                        sed 's/\\\${BUILD_NUMBER}/${env.BUILD_NUMBER}/g' Deployment/frontend-deployment.yaml > frontend-deployment-tagged.yaml
-                        kubectl apply -f backend-deployment-tagged.yaml
-                        kubectl apply -f frontend-deployment-tagged.yaml
+                        sed 's/\\\${BUILD_NUMBER}/${env.BUILD_NUMBER}/g' Deployment/backend-deployment.yaml > backend-deployment.yaml
+                        sed 's/\\\${BUILD_NUMBER}/${env.BUILD_NUMBER}/g' Deployment/frontend-deployment.yaml > frontend-deployment.yaml
+                        kubectl apply -f backend-deployment.yaml
+                        kubectl apply -f frontend-deployment.yaml
                     """
 
-                    sh 'kubectl rollout restart deployment/recipe-backend'
-                    sh 'kubectl rollout restart deployment/recipe-frontend'
+                    sh 'kubectl rollout restart deployment/auth-backend'
+                    sh 'kubectl rollout restart deployment/auth-frontend'
                 }
             }
         }
