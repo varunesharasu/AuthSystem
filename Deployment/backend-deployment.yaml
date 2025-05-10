@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recipe-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: recipe-backend
+  template:
+    metadata:
+      labels:
+        app: recipe-backend
+    spec:
+      containers:
+        - name: backend
+          image: varunesht/auth-backend:${BUILD_NUMBER}   # <-- Use Jenkins build number
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+          env:
+            - name: MONGO_URI
+              value: "mongodb+srv://varunesharasu:varunesh@cluster1.lvoka.mongodb.net/"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: recipe-backend
+spec:
+  selector:
+    app: recipe-backend
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+  type: ClusterIP
