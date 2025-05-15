@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        KUBECONFIG = '/home/varunesh/jenkins-kube/config'
+        KUBECONFIG = '/var/lib/jenkins/.kube/config'
         DOCKERHUB_USER = 'varunesht'
         BUILD_TAG = "${env.BUILD_NUMBER}"
         BACKEND_IMAGE = "${DOCKERHUB_USER}/auth-backend:${BUILD_TAG}"
@@ -20,7 +20,7 @@ pipeline {
             steps {
                 git branch: 'main',
                     url: 'https://github.com/varunesharasu/AuthSystem.git'
-                    }
+            }
         }
 
         stage('Build Backend Image') {
@@ -60,12 +60,11 @@ pipeline {
                     sh """
                         sed 's/\\\${BUILD_NUMBER}/${env.BUILD_NUMBER}/g' Deployment/backend-deployment.yaml > backend-deployment.yaml
                         sed 's/\\\${BUILD_NUMBER}/${env.BUILD_NUMBER}/g' Deployment/frontend-deployment.yaml > frontend-deployment.yaml
-                        kubectl apply -f backend-deployment.yaml
-                        kubectl apply -f frontend-deployment.yaml
+                        kubectl apply --kubeconfig=${env.KUBECONFIG} -f backend-deployment.yaml
+                        kubectl apply --kubeconfig=${env.KUBECONFIG} -f frontend-deployment.yaml
+                        kubectl rollout restart deployment/recipe-backend --kubeconfig=${env.KUBECONFIG}
+                        kubectl rollout restart deployment/recipe-frontend --kubeconfig=${env.KUBECONFIG}
                     """
-
-                    sh 'kubectl rollout restart deployment/auth-backend'
-                    sh 'kubectl rollout restart deployment/auth-frontend'
                 }
             }
         }
@@ -73,8 +72,10 @@ pipeline {
         stage('Deploy Monitoring') {
             steps {
                 script {
-                    sh 'kubectl apply -f Deployment/prometheus-deployment.yaml'
-                    sh 'kubectl apply -f Deployment/grafana-deployment.yaml'
+                    sh """
+                        kubectl apply --kubeconfig=${env.KUBECONFIG} -f Deployment/prometheus-deployment.yaml
+                        kubectl apply --kubeconfig=${env.KUBECONFIG} -f Deployment/grafana-deployment.yaml
+                    """
                 }
             }
         }
