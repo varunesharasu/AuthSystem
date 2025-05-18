@@ -5,6 +5,9 @@ import axios from "axios"
 
 export const AuthContext = createContext()
 
+// Use environment variable for API URL
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api/auth"
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -31,7 +34,7 @@ export const AuthProvider = ({ children }) => {
         },
       }
 
-      const { data } = await axios.get("http://10.108.51.97:5000/api/auth/profile", config)
+      const { data } = await axios.get(`${API_URL}/profile`, config)
 
       setUser(data.user)
       setError(null)
@@ -48,7 +51,7 @@ export const AuthProvider = ({ children }) => {
   const register = async (userData) => {
     try {
       setIsLoading(true)
-      const { data } = await axios.post("http://10.108.51.97:5000/api/auth/register", userData)
+      const { data } = await axios.post(`${API_URL}/register`, userData)
 
       // Save token to localStorage
       localStorage.setItem("authToken", data.token)
@@ -70,7 +73,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       setIsLoading(true)
-      const { data } = await axios.post("http://10.108.51.97:5000/api/auth/login", { email, password })
+      const { data } = await axios.post(`${API_URL}/login`, { email, password })
 
       // Save token to localStorage
       localStorage.setItem("authToken", data.token)
